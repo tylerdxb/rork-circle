@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { View, StyleSheet, Animated, Dimensions } from 'react-native';
 import { Image } from 'expo-image';
 
 const { width, height } = Dimensions.get('window');
@@ -13,13 +12,6 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
   // Animation values
   const logoScale = useRef(new Animated.Value(0.3)).current;
   const logoOpacity = useRef(new Animated.Value(0)).current;
-  
-  const textOpacity = useRef(new Animated.Value(0)).current;
-  const textTranslateY = useRef(new Animated.Value(40)).current;
-  
-  const subtitleOpacity = useRef(new Animated.Value(0)).current;
-  const subtitleTranslateY = useRef(new Animated.Value(30)).current;
-  
   const containerOpacity = useRef(new Animated.Value(1)).current;
   const containerTranslateY = useRef(new Animated.Value(0)).current;
 
@@ -44,38 +36,8 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
         }),
       ]),
       
-      // Animate main text
-      Animated.parallel([
-        Animated.timing(textOpacity, {
-          toValue: 1,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-        Animated.spring(textTranslateY, {
-          toValue: 0,
-          friction: 8,
-          tension: 40,
-          useNativeDriver: true,
-        }),
-      ]),
-      
-      // Animate subtitle
-      Animated.parallel([
-        Animated.timing(subtitleOpacity, {
-          toValue: 1,
-          duration: 600,
-          useNativeDriver: true,
-        }),
-        Animated.spring(subtitleTranslateY, {
-          toValue: 0,
-          friction: 8,
-          tension: 40,
-          useNativeDriver: true,
-        }),
-      ]),
-      
       // Hold for a moment
-      Animated.delay(1800),
+      Animated.delay(2000),
       
       // Fade out transition
       Animated.parallel([
@@ -106,7 +68,7 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
       ]}
     >
       <View style={styles.content}>
-        {/* Full-screen logo */}
+        {/* Centered logo */}
         <Animated.View
           style={[
             styles.logoContainer,
@@ -122,32 +84,6 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
             contentFit="contain"
           />
         </Animated.View>
-        
-        {/* App name */}
-        <Animated.Text 
-          style={[
-            styles.title,
-            {
-              opacity: textOpacity,
-              transform: [{ translateY: textTranslateY }]
-            }
-          ]}
-        >
-          CIRCLE
-        </Animated.Text>
-        
-        {/* Tagline */}
-        <Animated.Text 
-          style={[
-            styles.subtitle,
-            {
-              opacity: subtitleOpacity,
-              transform: [{ translateY: subtitleTranslateY }]
-            }
-          ]}
-        >
-          FIND YOUR CIRCLE
-        </Animated.Text>
       </View>
     </Animated.View>
   );
@@ -168,31 +104,13 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   logoContainer: {
-    width: width * 0.9,
-    height: height * 0.5,
+    width: width * 0.8,
+    height: height * 0.4,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: height * 0.08,
   },
   logoImage: {
     width: '100%',
     height: '100%',
-  },
-  title: {
-    fontSize: Math.min(width * 0.12, 48),
-    fontWeight: '700',
-    color: '#5c7aff',
-    letterSpacing: 6,
-    marginBottom: 20,
-    textAlign: 'center',
-    fontFamily: 'System',
-  },
-  subtitle: {
-    fontSize: Math.min(width * 0.04, 16),
-    fontWeight: '500',
-    color: '#20f0c6',
-    letterSpacing: 3,
-    textAlign: 'center',
-    fontFamily: 'System',
   },
 });
