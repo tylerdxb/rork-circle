@@ -14,9 +14,6 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
   const logoScale = useRef(new Animated.Value(0.3)).current;
   const logoOpacity = useRef(new Animated.Value(0)).current;
   
-  const glowOpacity = useRef(new Animated.Value(0)).current;
-  const glowScale = useRef(new Animated.Value(0.5)).current;
-  
   const textOpacity = useRef(new Animated.Value(0)).current;
   const textTranslateY = useRef(new Animated.Value(40)).current;
   
@@ -43,21 +40,6 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
           toValue: 1,
           friction: 6,
           tension: 40,
-          useNativeDriver: true,
-        }),
-      ]),
-      
-      // Animate glow effect
-      Animated.parallel([
-        Animated.timing(glowOpacity, {
-          toValue: 0.8,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.spring(glowScale, {
-          toValue: 1.3,
-          friction: 8,
-          tension: 30,
           useNativeDriver: true,
         }),
       ]),
@@ -124,30 +106,6 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
       ]}
     >
       <View style={styles.content}>
-        {/* Glow effect behind logo */}
-        <Animated.View 
-          style={[
-            styles.glow,
-            { 
-              opacity: glowOpacity,
-              transform: [{ scale: glowScale }]
-            }
-          ]}
-        >
-          <LinearGradient
-            colors={[
-              'rgba(92, 122, 255, 0.6)', 
-              'rgba(32, 240, 198, 0.6)', 
-              'rgba(92, 122, 255, 0.3)',
-              'rgba(32, 240, 198, 0.3)',
-              'transparent'
-            ]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.gradientGlow}
-          />
-        </Animated.View>
-        
         {/* Full-screen logo */}
         <Animated.View
           style={[
@@ -209,22 +167,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  glow: {
-    position: 'absolute',
-    width: width * 1.2,
-    height: width * 1.2,
-    borderRadius: width * 0.6,
-    overflow: 'hidden',
-  },
-  gradientGlow: {
-    width: '100%',
-    height: '100%',
-  },
   logoContainer: {
-    width: width * 0.8,
-    height: width * 0.8,
-    maxWidth: 400,
-    maxHeight: 400,
+    width: width * 0.9,
+    height: height * 0.5,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: height * 0.08,
