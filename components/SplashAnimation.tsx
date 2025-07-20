@@ -11,17 +11,17 @@ interface SplashAnimationProps {
 
 export default function SplashAnimation({ onAnimationComplete }: SplashAnimationProps) {
   // Animation values
-  const logoScale = useRef(new Animated.Value(0.7)).current;
+  const logoScale = useRef(new Animated.Value(0.3)).current;
   const logoOpacity = useRef(new Animated.Value(0)).current;
   
   const glowOpacity = useRef(new Animated.Value(0)).current;
-  const glowScale = useRef(new Animated.Value(0.8)).current;
+  const glowScale = useRef(new Animated.Value(0.5)).current;
   
   const textOpacity = useRef(new Animated.Value(0)).current;
-  const textTranslateY = useRef(new Animated.Value(30)).current;
+  const textTranslateY = useRef(new Animated.Value(40)).current;
   
   const subtitleOpacity = useRef(new Animated.Value(0)).current;
-  const subtitleTranslateY = useRef(new Animated.Value(20)).current;
+  const subtitleTranslateY = useRef(new Animated.Value(30)).current;
   
   const containerOpacity = useRef(new Animated.Value(1)).current;
   const containerTranslateY = useRef(new Animated.Value(0)).current;
@@ -29,40 +29,40 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
   useEffect(() => {
     // Sequence of animations
     Animated.sequence([
-      // Delay for initial black screen
-      Animated.delay(300),
+      // Initial delay for black screen
+      Animated.delay(400),
       
       // Fade in and scale logo with spring effect
       Animated.parallel([
         Animated.timing(logoOpacity, {
           toValue: 1,
-          duration: 1000,
+          duration: 1200,
           useNativeDriver: true,
         }),
         Animated.spring(logoScale, {
           toValue: 1,
-          friction: 8,
+          friction: 6,
           tension: 40,
           useNativeDriver: true,
         }),
       ]),
       
-      // Fade in and scale glow effect
+      // Animate glow effect
       Animated.parallel([
         Animated.timing(glowOpacity, {
-          toValue: 0.6,
-          duration: 1200,
+          toValue: 0.8,
+          duration: 1000,
           useNativeDriver: true,
         }),
         Animated.spring(glowScale, {
-          toValue: 1.2,
-          friction: 10,
+          toValue: 1.3,
+          friction: 8,
           tension: 30,
           useNativeDriver: true,
         }),
       ]),
       
-      // Fade in and slide up main text
+      // Animate main text
       Animated.parallel([
         Animated.timing(textOpacity, {
           toValue: 1,
@@ -77,7 +77,7 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
         }),
       ]),
       
-      // Fade in and slide up subtitle
+      // Animate subtitle
       Animated.parallel([
         Animated.timing(subtitleOpacity, {
           toValue: 1,
@@ -92,24 +92,23 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
         }),
       ]),
       
-      // Pause before transitioning out
-      Animated.delay(1500),
+      // Hold for a moment
+      Animated.delay(1800),
       
-      // Fade out and slide up the entire container
+      // Fade out transition
       Animated.parallel([
         Animated.timing(containerOpacity, {
           toValue: 0,
-          duration: 600,
+          duration: 800,
           useNativeDriver: true,
         }),
         Animated.timing(containerTranslateY, {
           toValue: -height * 0.1,
-          duration: 600,
+          duration: 800,
           useNativeDriver: true,
         }),
       ]),
     ]).start(() => {
-      // Call the callback when animation is complete
       onAnimationComplete();
     });
   }, []);
@@ -136,14 +135,20 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
           ]}
         >
           <LinearGradient
-            colors={['rgba(92, 122, 255, 0.4)', 'rgba(32, 240, 198, 0.4)', 'rgba(92, 122, 255, 0.2)']}
+            colors={[
+              'rgba(92, 122, 255, 0.6)', 
+              'rgba(32, 240, 198, 0.6)', 
+              'rgba(92, 122, 255, 0.3)',
+              'rgba(32, 240, 198, 0.3)',
+              'transparent'
+            ]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.gradientGlow}
           />
         </Animated.View>
         
-        {/* Logo */}
+        {/* Full-screen logo */}
         <Animated.View
           style={[
             styles.logoContainer,
@@ -198,43 +203,51 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   content: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
   glow: {
     position: 'absolute',
-    width: 300,
-    height: 300,
-    borderRadius: 150,
+    width: width * 1.2,
+    height: width * 1.2,
+    borderRadius: width * 0.6,
     overflow: 'hidden',
   },
   gradientGlow: {
     width: '100%',
     height: '100%',
-    opacity: 0.8,
   },
   logoContainer: {
-    marginBottom: 48,
+    width: width * 0.8,
+    height: width * 0.8,
+    maxWidth: 400,
+    maxHeight: 400,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: height * 0.08,
   },
   logoImage: {
-    width: 120,
-    height: 120,
+    width: '100%',
+    height: '100%',
   },
   title: {
-    fontSize: 42,
+    fontSize: Math.min(width * 0.12, 48),
     fontWeight: '700',
-    color: '#5c7aff', // Neon blue matching the logo
-    letterSpacing: 4,
-    marginBottom: 16,
+    color: '#5c7aff',
+    letterSpacing: 6,
+    marginBottom: 20,
     textAlign: 'center',
+    fontFamily: 'System',
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: Math.min(width * 0.04, 16),
     fontWeight: '500',
-    color: '#20f0c6', // Teal matching the logo
-    letterSpacing: 2,
+    color: '#20f0c6',
+    letterSpacing: 3,
     textAlign: 'center',
+    fontFamily: 'System',
   },
 });
