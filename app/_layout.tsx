@@ -2,11 +2,10 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { useAuthStore } from "@/store/authStore";
 import { ErrorBoundary } from "./error-boundary";
-import SplashAnimation from "@/components/SplashAnimation";
 
 export const unstable_settings = {
   initialRouteName: "(auth)",
@@ -19,8 +18,6 @@ export default function RootLayout() {
   const [loaded, error] = useFonts({
     ...FontAwesome.font,
   });
-  
-  const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
     if (error) {
@@ -37,14 +34,6 @@ export default function RootLayout() {
 
   if (!loaded) {
     return null;
-  }
-  
-  if (showSplash) {
-    return (
-      <SplashAnimation 
-        onAnimationComplete={() => setShowSplash(false)} 
-      />
-    );
   }
 
   return (
