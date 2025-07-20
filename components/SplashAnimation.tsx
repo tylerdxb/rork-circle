@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Image } from 'expo-image';
 
 const { width, height } = Dimensions.get('window');
 
@@ -10,17 +11,17 @@ interface SplashAnimationProps {
 
 export default function SplashAnimation({ onAnimationComplete }: SplashAnimationProps) {
   // Animation values
-  const logoScale = useRef(new Animated.Value(0.5)).current;
+  const logoScale = useRef(new Animated.Value(0.7)).current;
   const logoOpacity = useRef(new Animated.Value(0)).current;
   
   const glowOpacity = useRef(new Animated.Value(0)).current;
   const glowScale = useRef(new Animated.Value(0.8)).current;
   
   const textOpacity = useRef(new Animated.Value(0)).current;
-  const textTranslateY = useRef(new Animated.Value(20)).current;
+  const textTranslateY = useRef(new Animated.Value(30)).current;
   
   const subtitleOpacity = useRef(new Animated.Value(0)).current;
-  const subtitleTranslateY = useRef(new Animated.Value(10)).current;
+  const subtitleTranslateY = useRef(new Animated.Value(20)).current;
   
   const containerOpacity = useRef(new Animated.Value(1)).current;
   const containerTranslateY = useRef(new Animated.Value(0)).current;
@@ -28,16 +29,19 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
   useEffect(() => {
     // Sequence of animations
     Animated.sequence([
+      // Delay for initial black screen
+      Animated.delay(300),
+      
       // Fade in and scale logo with spring effect
       Animated.parallel([
         Animated.timing(logoOpacity, {
           toValue: 1,
-          duration: 800,
+          duration: 1000,
           useNativeDriver: true,
         }),
         Animated.spring(logoScale, {
           toValue: 1,
-          friction: 7,
+          friction: 8,
           tension: 40,
           useNativeDriver: true,
         }),
@@ -46,13 +50,13 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
       // Fade in and scale glow effect
       Animated.parallel([
         Animated.timing(glowOpacity, {
-          toValue: 0.7,
-          duration: 1000,
+          toValue: 0.6,
+          duration: 1200,
           useNativeDriver: true,
         }),
         Animated.spring(glowScale, {
-          toValue: 1.1,
-          friction: 8,
+          toValue: 1.2,
+          friction: 10,
           tension: 30,
           useNativeDriver: true,
         }),
@@ -89,18 +93,18 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
       ]),
       
       // Pause before transitioning out
-      Animated.delay(1200),
+      Animated.delay(1500),
       
       // Fade out and slide up the entire container
       Animated.parallel([
         Animated.timing(containerOpacity, {
           toValue: 0,
-          duration: 500,
+          duration: 600,
           useNativeDriver: true,
         }),
         Animated.timing(containerTranslateY, {
           toValue: -height * 0.1,
-          duration: 500,
+          duration: 600,
           useNativeDriver: true,
         }),
       ]),
@@ -132,7 +136,7 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
           ]}
         >
           <LinearGradient
-            colors={['rgba(92, 122, 255, 0.3)', 'rgba(32, 240, 198, 0.3)']}
+            colors={['rgba(92, 122, 255, 0.4)', 'rgba(32, 240, 198, 0.4)', 'rgba(92, 122, 255, 0.2)']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.gradientGlow}
@@ -149,19 +153,11 @@ export default function SplashAnimation({ onAnimationComplete }: SplashAnimation
             }
           ]}
         >
-          <View style={styles.logoWrapper}>
-            {/* Hexagon outline */}
-            <View style={styles.hexagonOutline}>
-              <View style={[styles.circle, styles.topRightCircle]} />
-              <View style={[styles.circle, styles.bottomLeftCircle]} />
-            </View>
-            
-            {/* Hexagon fill */}
-            <View style={styles.hexagonFill}>
-              <View style={[styles.circleFill, styles.topRightCircle]} />
-              <View style={[styles.circleFill, styles.bottomLeftCircle]} />
-            </View>
-          </View>
+          <Image
+            source={{ uri: 'https://r2-pub.rork.com/attachments/xy6wbczkua0hi3cxmgvm6' }}
+            style={styles.logoImage}
+            contentFit="contain"
+          />
         </Animated.View>
         
         {/* App name */}
@@ -207,76 +203,38 @@ const styles = StyleSheet.create({
   },
   glow: {
     position: 'absolute',
-    width: 280,
-    height: 280,
-    borderRadius: 140,
+    width: 300,
+    height: 300,
+    borderRadius: 150,
     overflow: 'hidden',
   },
   gradientGlow: {
     width: '100%',
     height: '100%',
-    opacity: 0.7,
-  },
-  logoWrapper: {
-    width: 100,
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
+    opacity: 0.8,
   },
   logoContainer: {
-    marginBottom: 40,
+    marginBottom: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  hexagonOutline: {
-    width: 70,
-    height: 70,
-    borderWidth: 3,
-    borderColor: '#20f0c6', // Teal
-    borderRadius: 15,
-    transform: [{ rotate: '45deg' }],
-    position: 'absolute',
-  },
-  hexagonFill: {
-    width: 50,
-    height: 50,
-    backgroundColor: '#5c7aff', // Neon blue
-    borderRadius: 12,
-    transform: [{ rotate: '45deg' }],
-    position: 'absolute',
-  },
-  circle: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: '#20f0c6', // Teal
-    position: 'absolute',
-  },
-  circleFill: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: '#5c7aff', // Neon blue
-    position: 'absolute',
-  },
-  topRightCircle: {
-    top: -9,
-    right: -9,
-  },
-  bottomLeftCircle: {
-    bottom: -9,
-    left: -9,
+  logoImage: {
+    width: 120,
+    height: 120,
   },
   title: {
     fontSize: 42,
     fontWeight: '700',
-    color: '#5c7aff', // Neon blue
+    color: '#5c7aff', // Neon blue matching the logo
     letterSpacing: 4,
-    marginBottom: 12,
+    marginBottom: 16,
+    textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#20f0c6', // Teal
+    color: '#20f0c6', // Teal matching the logo
     letterSpacing: 2,
+    textAlign: 'center',
   },
 });
